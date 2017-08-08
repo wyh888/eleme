@@ -97,6 +97,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+	@import "../../common/stylus/reset";
 	@import "../../common/stylus/mixin";
 
 	.header

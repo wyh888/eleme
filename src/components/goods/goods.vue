@@ -2,7 +2,7 @@
 	<div class="goods">
 		<div class="menu-wrapper" v-el:menu-wrapper>
 			<ul>
-				<li v-for="item in goods" class="menu-item">
+				<li v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}" @click="selectMenu($index, $event)">
 					<span class="text" border-1px>
 						<span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
 					</span>
@@ -60,7 +60,7 @@
 				for (let i = 0; i < this.listHeight.length; i++) {
 					let height1 = this.listHeight[i];
 					let height2 = this.listHeight[i + 1];
-					if (!height2 || (this.scrollY > height1 && this.scrollY < height2)) {
+					if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
 						return i;
 					}
 				}
@@ -81,14 +81,24 @@
 			});
 		},
 		methods: {
+			selectMenu(index, event) {
+				if (!event._constructed) {
+					return;
+				}
+				let foodList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+				let el = foodList[index];
+				this.foodsScroll.scrollToElement(el, 300);
+			},
 			_initScroll() {
-				this.menuScroll = new BScroll(this.$els.menuWrapper, {});
+				this.menuScroll = new BScroll(this.$els.menuWrapper, {
+					click: true
+				});
 
-				this.foodScroll = new BScroll(this.$els.foodsWrapper, {
+				this.foodsScroll = new BScroll(this.$els.foodsWrapper, {
 					probeType: 3
 				});
 
-				this.foodScroll.on('scroll', (pos) => {
+				this.foodsScroll.on('scroll', (pos) => {
 					this.scrollY = Math.abs(Math.round(pos.y));
 				});
 			},
@@ -127,6 +137,14 @@
 				width: 56px
 				line-height: 14px
 				padding: 0 12px
+				&.current
+					position: relative
+					z-index: 10
+					margin-top: -1px
+					background: #fff
+					font-weight: 700
+					.text
+						border-none()
 				.icon
 					display: inline-block
 					vertical-align: top

@@ -61,8 +61,6 @@
 	import ratingselect from 'components/ratingselect/ratingselect';
 	import split from 'components/split/split';
 
-	// const POSITIVE = 0;
-	// const NEGATIVE = 1;
 	const ALL = 2;
 
 	export default {
